@@ -9,14 +9,16 @@ let h2 = document.querySelector("h2");
 
 // =============================GAME START========================
 
-document.addEventListener("keypress", function() {
-    if (started == false) {
-        console.log("Game started");
-        started = true;
+function startGame() {
+    if (started) return;
 
-        levelUp();
-    }
-});
+    console.log("Game started");
+    started = true;
+    levelUp();
+}
+
+document.addEventListener("keydown", startGame);
+document.addEventListener("pointerdown", startGame);
 
 // ========================FOR GAME FLASH=====================
 
@@ -56,8 +58,12 @@ function levelUp() {
 
 // ===================================USER BUTTON PRESS AND CHECK FUNCTION CALL========================
 function btnPress() {
-    console.log(this);
-    let btn = (this);
+    if (!started) {
+        startGame();
+        return;
+    }
+
+    let btn = this;
     userFlash(btn);
 
     let userColor = btn.getAttribute("id");
@@ -70,21 +76,21 @@ function btnPress() {
 
 let allBtns = document.querySelectorAll(".button");
 
-for (btn of allBtns) {
-    btn.addEventListener("click", btnPress);
+for (let btn of allBtns) {
+    btn.addEventListener("pointerdown", btnPress);
 }
 
 
 // ==============================CHECK ANSWER========================
 
 function checkAnswer(idx) {
-    if(userSequence[idx] === gameSequence[idx]) {
+    if (userSequence[idx] === gameSequence[idx]) {
 
-        if(userSequence.length === gameSequence.length) {
+        if (userSequence.length === gameSequence.length) {
             setTimeout(levelUp, 1000);
         }
-    }else{
-        h2.innerHTML = `Game Over! Your score was <b>${level}</b>. Press any key to restart`;
+    } else {
+        h2.innerHTML = `Game Over! Your score was <b>${level}</b>. Tap or press any key to restart`;
         document.querySelector("body").style.backgroundColor = "red";
         setTimeout(function() {
             document.querySelector("body").style.backgroundColor = "black";
