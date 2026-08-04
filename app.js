@@ -7,12 +7,11 @@ let started = false;
 
 let h2 = document.querySelector("h2");
 
-// =============================GAME START========================
+// ============================= GAME START ============================
 
 function startGame() {
     if (started) return;
 
-    console.log("Game started");
     started = true;
     levelUp();
 }
@@ -20,87 +19,93 @@ function startGame() {
 document.addEventListener("keydown", startGame);
 document.addEventListener("pointerdown", startGame);
 
-// ========================FOR GAME FLASH=====================
+// ============================= GAME FLASH ============================
 
 function gameFlash(btn) {
     btn.classList.add("game-flash");
-    setTimeout(function() {
+
+    setTimeout(() => {
         btn.classList.remove("game-flash");
-    }, 850);
+    }, 250);
 }
 
-
-// ===========================FOR USER FLASH=========================
+// ============================= USER FLASH ============================
 
 function userFlash(btn) {
     btn.classList.add("user-flash");
-    setTimeout(function() {
+
+    setTimeout(() => {
         btn.classList.remove("user-flash");
-    }, 850);
+    }, 250);
 }
 
-// ============================LEVEL UP WITH RANDOM BUTTON========================
-function levelUp() {
-    userSequence = []; //========LEVELUPKE BAAD USER ARRY KHALI HO JAYEGA HUME START SE VALUE PUSH KARNIHAI
-    level++;
-    h2.innerText = `Level ${level}`;
-    console.log("Level up!");
+// ============================= LEVEL UP ============================
 
-    let randomIdx = Math.floor(Math.random() * 4);
+function levelUp() {
+    userSequence = [];
+    level++;
+
+    h2.innerText = `Level ${level}`;
+
+    let randomIdx = Math.floor(Math.random() * btns.length);
     let randomColor = btns[randomIdx];
     let randomBtn = document.querySelector(`.${randomColor}`);
 
     gameSequence.push(randomColor);
-    console.log(gameSequence);
+
+    console.log("Game Sequence:", gameSequence);
 
     gameFlash(randomBtn);
 }
 
-// ===================================USER BUTTON PRESS AND CHECK FUNCTION CALL========================
+// ============================= BUTTON PRESS ============================
+
 function btnPress() {
-    if (!started) {
-        startGame();
-        return;
-    }
+    if (!started) return;
 
     let btn = this;
+
     userFlash(btn);
 
     let userColor = btn.getAttribute("id");
 
     userSequence.push(userColor);
-    console.log(userSequence);
+
+    console.log("User Sequence:", userSequence);
 
     checkAnswer(userSequence.length - 1);
 }
 
 let allBtns = document.querySelectorAll(".button");
 
-for (let btn of allBtns) {
+allBtns.forEach((btn) => {
     btn.addEventListener("pointerdown", btnPress);
-}
+});
 
-
-// ==============================CHECK ANSWER========================
+// ============================= CHECK ANSWER ============================
 
 function checkAnswer(idx) {
+
     if (userSequence[idx] === gameSequence[idx]) {
 
         if (userSequence.length === gameSequence.length) {
             setTimeout(levelUp, 1000);
         }
-    } else {
-        h2.innerHTML = `Game Over! Your score was <b>${level}</b>. Tap or press any key to restart`;
-        document.querySelector("body").style.backgroundColor = "red";
-        setTimeout(function() {
-            document.querySelector("body").style.backgroundColor = "black";
-        }, 150);
-        reset();
-    }
 
+    } else {
+
+        h2.innerHTML = `Game Over! Your score was <b>${level - 1}</b>.<br>Press any key or tap to restart`;
+
+        document.body.style.backgroundColor = "red";
+
+        setTimeout(() => {
+            document.body.style.backgroundColor = "black";
+            reset();
+        }, 300);
+    }
 }
 
-// ================================RESET FUNCTION=================================
+// ============================= RESET ============================
 
 function reset() {
     started = false;
