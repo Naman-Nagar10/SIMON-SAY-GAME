@@ -97,7 +97,7 @@ body {
 }
 
 .footer p {
-    margin: 0;
+    margin: 10px;
 }
 
 @media (max-width: 600px) {
