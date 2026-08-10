@@ -87,17 +87,19 @@ body {
 
 .footer {
     height: 25px;
-    display: flex;
+    /* display: flex;
+    flex-wrap: wrap; */
     align-items: center;
     justify-content: center;
     /* margin-top: 20px; */
-    margin-bottom: 0px;
-    font-size: 18px;
+    /* margin-bottom: 30px; */
+    font-size: 15px;
     color: #464545;
 }
 
 .footer p {
     margin: 10px;
+    
 }
 
 @media (max-width: 600px) {
